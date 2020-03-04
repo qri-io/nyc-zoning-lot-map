@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset='utf-8' />
+      <title>NYC Zoning Lots</title>
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
+      <style>
+        html, body {
+          height: 100%;
+        }
+        /* use a non-serif font */
+        html {
+          font-family: 'verdana', sans-serif;
+        }
+
+        /* get rid of the browser's default margin and padding around the body */
+        body {
+          margin: 0;
+          padding: 0;
+          display: flex;
+        }
+
+        /* absolute position the map container as full screen, leaving 300 pixels on the left */
+        #map-container {
+          flex: 1;
+        }
+
+        h3 {
+          margin-top: 0;
+          font-size: 1.8rem;
+        }
+
+        .mapboxgl-marker:hover {
+          cursor: pointer;
+        }
+
+        /* blue buttons with white bold text */
+        .flyto-button {
+          background: #0084aa;
+          color: #FFF;
+          padding: 11px;
+          border: none;
+          font-weight: 600;
+          font-size: 1rem;
+          width: 100%;
+          margin-bottom:15px;
+        }
+
+        /* on hover, make the background darker and turn the cursor to a pointer */
+        button:hover {
+          cursor: pointer;
+          background-color: #006987;
+        }
+
+        /* sidebar is fixed with and positioned to the left */
+        #sidebar {
+          flex-basis: 280px;
+          background-color: #0a99c3;
+          color: #FFF;
+          padding: 25px;
+          box-sizing: border-box;
+        }
+
+        #document-container {
+          flex-basis: 610px;
+        }
+      </style>
+  </head>
+  <body>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
+    type="text/css"
+    />
+    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <div id="map"></div>
+    <!-- the sidebar is fixed width and will contain a title, some text, and buttons -->
+    <div id='sidebar'>
+      <h3>NYC Zoning Lots</h3>
+    </div>
+    <!-- close sidebar -->
+    <!-- this is the map container, which will hold the mapboxGL map -->
+    <div id='map-container'></div>
+    <div id='document-container'>
+    </div>
+
+    <!-- Load mapboxGL, jQuery, then our local javascript files -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js" integrity="sha256-Fh801SO9gqegfUdkDxyzXzIUPWzO/Vatqj8uN+5xcL4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/mapbox/wellknown/master/wellknown.js"></script>
+    <script src='js/script.js'></script>
+  </body>
+</html>
