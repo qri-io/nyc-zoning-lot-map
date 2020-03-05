@@ -1,102 +1,78 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <meta charset='utf-8' />
-      <title>NYC Zoning Lots</title>
-      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
-      <style>
-        html, body {
-          height: 100%;
-        }
-        /* use a non-serif font */
-        html {
-          font-family: 'verdana', sans-serif;
-        }
-
-        /* get rid of the browser's default margin and padding around the body */
-        body {
-          margin: 0;
-          padding: 0;
-          display: flex;
-        }
-
-        /* absolute position the map container as full screen, leaving 300 pixels on the left */
-        #map-container {
-          flex: 1;
-        }
-
-        h3 {
-          margin-top: 0;
-          font-size: 1.8rem;
-        }
-
-        .mapboxgl-marker:hover {
-          cursor: pointer;
-        }
-
-        /* blue buttons with white bold text */
-        .flyto-button {
-          background: #0084aa;
-          color: #FFF;
-          padding: 11px;
-          border: none;
-          font-weight: 600;
-          font-size: 1rem;
-          width: 100%;
-          margin-bottom:15px;
-        }
-
-        /* on hover, make the background darker and turn the cursor to a pointer */
-        button:hover {
-          cursor: pointer;
-          background-color: #006987;
-        }
-
-        /* sidebar is fixed with and positioned to the left */
-        #sidebar {
-          flex-basis: 280px;
-          background-color: #0a99c3;
-          color: #FFF;
-          padding: 25px;
-          box-sizing: border-box;
-        }
-
-        #document-container {
-          flex-basis: 610px;
-        }
-      </style>
-  </head>
-  <body>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
-    <link
-    rel="stylesheet"
-    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
-    type="text/css"
-    />
-    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
-    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-    <div id="map"></div>
-    <!-- the sidebar is fixed width and will contain a title, some text, and buttons -->
-    <div id='sidebar'>
-      <h3>NYC Zoning Lots</h3>
+<head>
+  <meta charset='utf-8'>
+  <title>NYC Zoning Lots</title>
+  <meta content='initial-scale=1,maximum-scale=1,user-scalable=no' name='viewport'>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet'>
+  <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css" rel="stylesheet" type="text/css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href='css/styles.css' rel='stylesheet'>
+</head>
+<body>
+  <div id="map"></div><!-- this is the map container, which will hold the mapboxGL map -->
+  <div id='map-container'></div>
+  <div id='sidebar'>
+    <div class='container' id='about'>
+      <h2>NYC Zoning Lots</h2>
+      <p>This site presents a nascent dataset of NYC Zoning Lots compiled from public sources. Click a zoning lot to view more information about its component tax lots, its date of creation, and to preview its associated ACRIS document.</p>
+      <div class="alert alert-warning" role="alert">
+        The data presented here is incomplete and may contain inaccuracies and errors. Use the information at your own risk.
+      </div>
+      <p><a href='https://jorgefontan.com/zoning-lot-vs-tax-lot-nyc-zoning/' target='_blank'>What's a Zoning Lot?</a></p>
+      <hr>
+      <h4>About the Dataset</h4>
+      <p>Zoning Lots play an important role in the regulation of land use, but a centralized and accessible database does not exist to track them. We assembled a "best effort" spatial dataset by combining ACRIS records with geometries from MapPLUTO.</p>
+      <div class="alert alert-primary" role="alert">
+        <img alt="" src="https://qri.cloud/assets/qri-blob-logo-tiny.png" style="float: left; padding-top: 5px; padding-right: 18px;"> The dataset is versioned using the <a href='https://qri.io'>Qri Dataset Version Control System</a>, so you can reliably track changes as we make improvements to the data.
+      </div>
+      <p><span>Publication Version: <a href='https://qri.cloud/chriswhong/nyc_zoning_lots/at/ipfs/QmbdWdyy9eXRWLi2L9yZMfp4ZBt9Uhz174kuiJ3cRKaUCm' target='_blank'>QmbdWdyy9eXRWLi2L9yZMfp4ZBt9Uhz174kuiJ3cRKaUCm</a></span></p>
+      <h5>What's Included?</h5>
+      <p>While there are many documents that describe zoning lots in ACRIS, the most predictable and easy to find are filed under type "certificate". We noticed that records of type certificate with two or more tax lots associated usually ended up being zoning lot certification documents</p>
+      <p>We identified 4,531 ACRIS documents that met our criteria, then used the latest MapPLUTO data to find geometries for the associated tax lots. Of these, 2202 (49%) matched all geometries, 1655 (36%) matched some, and 674 matched none (these are not shown on this map but are included in the dataset).</p>
+      <p>It's far from a complete picture, but enough to start a conversation about how we can get there.</p>
+      <h5>Caveats</h5>
+      <ul>
+        <li>There are some documents in this dataset that are not related to zoning lots at all but met the criteria for inclusion.</li>
+        <li>There are many more zoning lots that would not show up under our initial ACRIS Query.</li>
+        <li>All geometries are from the latest version of MapPLUTO. Tax lot boundaries change over time, so a matching geometry may not represent what you see in the scanned document</li>
+        <li>Zoning Lots also change over time, and can be superseded. You may see multiple zoning lots created at different times that overlap</li>
+      </ul>
+      <h5>What's next?</h5>
+      <p>Here are some ideas about what to do next</p>
+      <ul>
+        <li>Add "flagging" and comments so users can identify bad data. Volunteers can clear these flags and improve the dataset over time.</li>
+        <li>Allow for user to drop a pin where they know a zoning lot is missing. Volunteers can conduct research and add missing zoning lots</li>
+      </ul>
     </div>
-    <!-- close sidebar -->
-    <!-- this is the map container, which will hold the mapboxGL map -->
-    <div id='map-container'></div>
-    <div id='document-container'>
+    <div id='zoning-lot-info'>
+      <a class="close" href="#"></a>
+      <div id='zoning-lot-info-content'></div>
     </div>
+  </div>
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js">
+  </script>
 
-    <!-- Load mapboxGL, jQuery, then our local javascript files -->
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"></script>
-    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js" integrity="sha256-Fh801SO9gqegfUdkDxyzXzIUPWzO/Vatqj8uN+5xcL4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.rawgit.com/mapbox/wellknown/master/wellknown.js"></script>
-    <script src='js/script.js'></script>
-  </body>
+  <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js">
+  </script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'>
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+  </script>
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'>
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js">
+  </script>
+  <script src="https://cdn.rawgit.com/mapbox/wellknown/master/wellknown.js">
+  </script>
+  <script src='js/script.js'>
+  </script>
+</body>
 </html>
